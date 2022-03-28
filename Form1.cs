@@ -45,6 +45,11 @@ namespace PhoneCheck
             List<Model> Filterresult = _service.GetGetlsPhone(txtDepkeyword.Text, txtRoomkeyword.Text);
             ModelTolsb(Filterresult);
         }
+
+        /// <summary>
+        /// Model倒入結果的ListBox  部門_單位名稱_電話
+        /// </summary>
+        /// <param name="Filterresult"></param>
         public void ModelTolsb( List<Model>Filterresult) 
         {
             foreach (Model _Model in Filterresult)
@@ -55,7 +60,7 @@ namespace PhoneCheck
                     foreach (string phone in _unit.Phones)
                     {
                         string stringResult = "";
-                        stringResult += _Model.Dep + "_" + _unit.Name + phone;
+                        stringResult += _Model.Dep + "_" + _unit.Name +"_"+ phone;
                         lsbPhone.Items.Add(stringResult);
                     }
                 }

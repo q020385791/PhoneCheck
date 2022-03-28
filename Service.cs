@@ -23,20 +23,31 @@ namespace PhoneCheck
         }
 
 
+        /// <summary>
+        /// 根據部門與單位的關鍵字區分查詢方法
+        /// </summary>
+        /// <param name="DepKeyword"></param>
+        /// <param name="RoomKeyword"></param>
+        /// <returns></returns>
         public List<Model> GetGetlsPhone(string DepKeyword, string RoomKeyword) 
         {
             List<Model> _model = new List<Model>();
+            //如果都沒輸入關鍵字則不查詢
             if (RoomKeyword.Trim() == "" && DepKeyword.Trim() == "")
             {
                 return _model;
             }
-
+            //部門查詢
             if (RoomKeyword.Trim() == ""&& DepKeyword.Trim()!="")
             {
                 _model=GetlsPhoneByDep(DepKeyword);
+
+            //單位查詢
             }else if (RoomKeyword.Trim() != "" && DepKeyword.Trim() == "") 
             {
                 _model = GetlsPhoneByRoom(RoomKeyword);
+
+            //部門與單位交集查詢
             }else if (RoomKeyword.Trim() != "" && DepKeyword.Trim() != "") 
             {
                 _model = GetlsPhoneByDepAndRoom(DepKeyword,RoomKeyword);
@@ -44,6 +55,11 @@ namespace PhoneCheck
             return _model;
         }
 
+        /// <summary>
+        /// 部門查詢
+        /// </summary>
+        /// <param name="DepKeyword"></param>
+        /// <returns></returns>
         public List<Model> GetlsPhoneByDep(string DepKeyword) 
         {
             List<Model> result = new List<Model>();
@@ -58,6 +74,11 @@ namespace PhoneCheck
             return result;
         }
 
+        /// <summary>
+        /// 單位查詢
+        /// </summary>
+        /// <param name="RoomKeyword"></param>
+        /// <returns></returns>
         public List<Model> GetlsPhoneByRoom(string RoomKeyword) 
         {
             List<Model> result = new List<Model>();
@@ -90,7 +111,12 @@ namespace PhoneCheck
         }
 
 
-
+        /// <summary>
+        /// 部門與單位交集查詢
+        /// </summary>
+        /// <param name="DepKeyword"></param>
+        /// <param name="RoomKeyword"></param>
+        /// <returns></returns>
         public List<Model> GetlsPhoneByDepAndRoom(string DepKeyword, string RoomKeyword) 
         {
             List<Model> result = new List<Model>();
