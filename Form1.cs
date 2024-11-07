@@ -23,16 +23,21 @@ namespace PhoneCheck
 
         private void txtDepkeyword_TextChanged(object sender, EventArgs e)
         {
-
             if (txtDepkeyword.Text.Trim()=="")
             {
                 return;
             }
-            lsbPhone.Items.Clear();
 
-            List<Model> Filterresult= _service.GetGetlsPhone(txtDepkeyword.Text,txtRoomkeyword.Text);
-            ModelTolsb(Filterresult);
-
+            try
+            {
+                lsbPhone.Items.Clear();
+                List<Model> filterResult = _service.GetFilteredPhoneList(txtDepkeyword.Text, txtRoomkeyword.Text);
+                DisplayResultsInListBox(filterResult);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred while fetching data: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         private void txtRoomkeyword_TextChanged(object sender, EventArgs e)
@@ -41,30 +46,31 @@ namespace PhoneCheck
             {
                 return;
             }
-            lsbPhone.Items.Clear();
-            List<Model> Filterresult = _service.GetGetlsPhone(txtDepkeyword.Text, txtRoomkeyword.Text);
-            ModelTolsb(Filterresult);
+
+            try
+            {
+                lsbPhone.Items.Clear();
+                List<Model> filterResult = _service.GetFilteredPhoneList(txtDepkeyword.Text, txtRoomkeyword.Text);
+                DisplayResultsInListBox(filterResult);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("An error occurred while fetching data: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
         /// <summary>
-        /// Model倒入結果的ListBox  部門_單位名稱_電話
+        /// Model倒入結果的ListBox  部門_姓名_電話
         /// </summary>
-        /// <param name="Filterresult"></param>
-        public void ModelTolsb( List<Model>Filterresult) 
+        /// <param name="filterResult"></param>
+        public void DisplayResultsInListBox( List<Model> filterResult) 
         {
-            foreach (Model _Model in Filterresult)
-            {
+            var formattedResults = filterResult
+            .SelectMany(m => m.lsUnit, (model, unit) => new { model.Dep, unit })
+            .SelectMany(x => x.unit.Phones, (x, phone) => $"{x.Dep}_{x.unit.Name}_{phone}")
+            .ToList();
 
-                foreach (Unit _unit in _Model.lsUnit)
-                {
-                    foreach (string phone in _unit.Phones)
-                    {
-                        string stringResult = "";
-                        stringResult += _Model.Dep + "_" + _unit.Name +"_"+ phone;
-                        lsbPhone.Items.Add(stringResult);
-                    }
-                }
-            }
+            lsbPhone.Items.AddRange(formattedResults.ToArray());
         }
 
     }

@@ -81,7 +81,7 @@ namespace PhoneCheck
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(77, 12);
             this.label3.TabIndex = 5;
-            this.label3.Text = "處室關鍵字：";
+            this.label3.Text = "姓名關鍵字：";
             // 
             // txtRoomkeyword
             // 

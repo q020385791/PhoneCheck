@@ -29,7 +29,7 @@ namespace PhoneCheck
         /// <param name="DepKeyword"></param>
         /// <param name="RoomKeyword"></param>
         /// <returns></returns>
-        public List<Model> GetGetlsPhone(string DepKeyword, string RoomKeyword) 
+        public List<Model> GetFilteredPhoneList(string DepKeyword, string RoomKeyword) 
         {
             List<Model> _model = new List<Model>();
             //如果都沒輸入關鍵字則不查詢
@@ -86,7 +86,7 @@ namespace PhoneCheck
            
             foreach (Model _model in AModel)
             {
-                bool IFexist = false;
+                bool isExist = false;
                 Model Temp = new Model();
                 Temp.Dep = _model.Dep;
                 Temp.lsUnit = new List<Unit>();
@@ -96,12 +96,12 @@ namespace PhoneCheck
                     if (_unit.Name.Contains(RoomKeyword))
                     {
                         Temp.lsUnit.Add(_unit);
-                        IFexist = true;
+                        isExist = true;
                         continue;
                     }
                 }
                 //如果有存在相關名稱才加入
-                if (IFexist)
+                if (isExist)
                 {
                     result.Add(Temp);
                 }
